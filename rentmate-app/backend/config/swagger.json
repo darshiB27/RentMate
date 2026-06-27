@@ -1,0 +1,592 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "RentMate API Documentation",
+    "description": "Production-ready backend API documentation for RentMate - PG & Hostel Finder Platform.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000",
+      "description": "Local Development Server"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    },
+    {
+      "cookieAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Enter your JWT token in the format: Bearer <token>"
+      },
+      "cookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "accessToken",
+        "description": "Session token passed automatically in cookie."
+      }
+    },
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "example": "Request validation failed."
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "example": [
+              {
+                "field": "email",
+                "message": "Invalid email address format."
+              }
+            ]
+          }
+        }
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Action completed successfully."
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "60d0fe4f5311236168a109ca"
+          },
+          "name": {
+            "type": "string",
+            "example": "Amit Gupta"
+          },
+          "email": {
+            "type": "string",
+            "example": "amit@rentmate.com"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["tenant", "owner", "admin"],
+            "example": "tenant"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "+919876543210"
+          },
+          "isVerified": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "Property": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "60d0fe4f5311236168a109cb"
+          },
+          "ownerId": {
+            "type": "string",
+            "example": "60d0fe4f5311236168a109ca"
+          },
+          "title": {
+            "type": "string",
+            "example": "Premium Double Sharing PG near Koramangala"
+          },
+          "price": {
+            "type": "number",
+            "example": 12000
+          },
+          "type": {
+            "type": "string",
+            "enum": ["PG", "Hostel", "Flat"],
+            "example": "PG"
+          },
+          "sharingType": {
+            "type": "string",
+            "enum": ["single", "double", "triple", "quad", "other"],
+            "example": "double"
+          },
+          "genderCategory": {
+            "type": "string",
+            "enum": ["boys", "girls", "unisex"],
+            "example": "boys"
+          },
+          "amenities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["WiFi", "AC", "Food", "Power Backup"]
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "example": "Point"
+              },
+              "coordinates": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "example": [77.6244, 12.9344]
+              }
+            }
+          },
+          "address": {
+            "type": "object",
+            "properties": {
+              "street": { "type": "string", "example": "12th Main Road" },
+              "locality": { "type": "string", "example": "Koramangala" },
+              "city": { "type": "string", "example": "Bengaluru" },
+              "state": { "type": "string", "example": "Karnataka" },
+              "zipCode": { "type": "string", "example": "560034" }
+            }
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["https://res.cloudinary.com/rentmate/image/upload/v1234/property1.jpg"]
+          },
+          "verificationStatus": {
+            "type": "string",
+            "enum": ["pending", "approved", "rejected"],
+            "example": "approved"
+          },
+          "availabilityStatus": {
+            "type": "string",
+            "enum": ["available", "occupied", "maintenance"],
+            "example": "available"
+          },
+          "ratingAverage": {
+            "type": "number",
+            "example": 4.5
+          },
+          "ratingCount": {
+            "type": "number",
+            "example": 12
+          }
+        }
+      },
+      "Inquiry": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "60d0fe4f5311236168a109cc"
+          },
+          "tenantId": {
+            "type": "string",
+            "example": "60d0fe4f5311236168a109ca"
+          },
+          "ownerId": {
+            "type": "string",
+            "example": "60d0fe4f5311236168a109cf"
+          },
+          "propertyId": {
+            "type": "string",
+            "example": "60d0fe4f5311236168a109cb"
+          },
+          "message": {
+            "type": "string",
+            "example": "Hello, I am interested in visiting this PG. Is double sharing available?"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "+919876543210"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "viewed", "contacted", "visit_scheduled", "accepted", "rejected", "completed", "cancelled"],
+            "example": "pending"
+          }
+        }
+      },
+      "Notification": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "60d0fe4f5311236168a109cd"
+          },
+          "userId": {
+            "type": "string",
+            "example": "60d0fe4f5311236168a109ca"
+          },
+          "title": {
+            "type": "string",
+            "example": "New Inquiry Received"
+          },
+          "message": {
+            "type": "string",
+            "example": "Tenant Amit has inquired about your property."
+          },
+          "type": {
+            "type": "string",
+            "enum": ["inquiry", "property", "review", "verification", "system"],
+            "example": "inquiry"
+          },
+          "isRead": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/v1/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Register a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "email", "password", "role"],
+                "properties": {
+                  "name": { "type": "string", "example": "Amit Gupta" },
+                  "email": { "type": "string", "example": "amit@rentmate.com" },
+                  "password": { "type": "string", "example": "SecurePass123!" },
+                  "role": { "type": "string", "enum": ["tenant", "owner"], "example": "tenant" },
+                  "phoneNumber": { "type": "string", "example": "+919876543210" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Registration successful. Please verify email." }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Authenticate user and get session cookies",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": { "type": "string", "example": "amit@rentmate.com" },
+                  "password": { "type": "string", "example": "SecurePass123!" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful, cookie set",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Login successful." },
+                    "data": { "$ref": "#/components/schemas/User" }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Logout current session",
+        "responses": {
+          "200": {
+            "description": "Logout successful"
+          }
+        }
+      }
+    },
+    "/api/v1/search": {
+      "get": {
+        "tags": ["Search"],
+        "summary": "Perform dynamic faceted search on property listings",
+        "parameters": [
+          { "name": "query", "in": "query", "schema": { "type": "string" }, "description": "Search keyword" },
+          { "name": "city", "in": "query", "schema": { "type": "string" } },
+          { "name": "priceMin", "in": "query", "schema": { "type": "number" } },
+          { "name": "priceMax", "in": "query", "schema": { "type": "number" } },
+          { "name": "type", "in": "query", "schema": { "type": "string", "enum": ["PG", "Hostel", "Flat"] } },
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 10 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Faceted search results list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "properties": {
+                          "type": "array",
+                          "items": { "$ref": "#/components/schemas/Property" }
+                        },
+                        "total": { "type": "integer", "example": 1 }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wishlist/toggle/{propertyId}": {
+      "patch": {
+        "tags": ["Wishlist"],
+        "summary": "Toggle property in tenant wishlist",
+        "parameters": [
+          { "name": "propertyId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Toggle status details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Property added to wishlist." }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inquiries": {
+      "post": {
+        "tags": ["Inquiry"],
+        "summary": "Create a new property inquiry",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["propertyId", "message", "phoneNumber"],
+                "properties": {
+                  "propertyId": { "type": "string", "example": "60d0fe4f5311236168a109cb" },
+                  "message": { "type": "string", "example": "Hello, I am interested in visiting this double sharing room." },
+                  "phoneNumber": { "type": "string", "example": "+919876543210" },
+                  "preferredVisitDate": { "type": "string", "format": "date-time" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Inquiry submitted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": { "$ref": "#/components/schemas/Inquiry" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inquiries/me": {
+      "get": {
+        "tags": ["Inquiry"],
+        "summary": "Retrieve paginated inquiries made or received by current authenticated user",
+        "parameters": [
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 10 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Inquiries fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "inquiries": {
+                          "type": "array",
+                          "items": { "$ref": "#/components/schemas/Inquiry" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/notifications": {
+      "get": {
+        "tags": ["Notification"],
+        "summary": "Retrieve paginated notifications list for current authenticated user",
+        "parameters": [
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 10 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notifications fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "notifications": {
+                          "type": "array",
+                          "items": { "$ref": "#/components/schemas/Notification" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/analytics/view/{propertyId}": {
+      "post": {
+        "tags": ["Analytics"],
+        "summary": "Record a new property view hit",
+        "parameters": [
+          { "name": "propertyId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "View hit recorded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "tracked": { "type": "boolean", "example": true }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/properties/{id}/approve": {
+      "patch": {
+        "tags": ["Admin"],
+        "summary": "Approve a property listing",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Property listing approved successfully"
+          }
+        }
+      }
+    }
+  }
+}
