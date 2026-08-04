@@ -1,10 +1,10 @@
-# 🏢 RentMate — Decentralized Student Room and PG Finder Platform
+# RentMate — Decentralized Student Room and PG Finder Platform
 
 RentMate is an enterprise-grade, full-stack MERN application designed to eliminate urban housing friction for students and young working professionals moving into new educational or corporate hubs. Developed by Team **ZeroLag** as part of our summer engineering internship evaluation framework, the platform bridges the gap between accommodation seekers and verified property hosts by completely removing brokers, implementing geospatial map discovery, and providing dynamic inventory management tracking.
 
 ---
 
-## 👥 Team ZeroLag Contributors
+## Team ZeroLag Contributors
 * **Vikash Chaurasiya** — *Founder & System Architect*
 * **Amit Gupta** — *Core Backend & API Engineer*
 * **Darshika Bhasker** — *Lead UI/UX & Frontend Developer*
@@ -12,7 +12,7 @@ RentMate is an enterprise-grade, full-stack MERN application designed to elimina
 
 ---
 
-## 🛠️ Core Technology Stack
+## Core Technology Stack
 * **Frontend:** React.js, Tailwind CSS
 * **Backend:** Node.js, Express.js
 * **Database:** MongoDB Atlas (Mongoose Data Modeling)[cite: 1]
@@ -20,7 +20,7 @@ RentMate is an enterprise-grade, full-stack MERN application designed to elimina
 
 ---
 
-## ✨ Minimum Viable Product (MVP) Features
+## Minimum Viable Product (MVP) Features
 * **Geospatial Discovery:** Map-integrated search filters tracking proximity to college campuses and transit hubs[cite: 1].
 * **Live Inventory Monitoring:** Real-time bed availability status tracking across shared property units[cite: 1].
 * **Multi-Sided Dashboards:** Specialized control panels for Tenants (wishlists, inquiries) and Hosts (listing creation, asset uploads)[cite: 1].
@@ -28,7 +28,7 @@ RentMate is an enterprise-grade, full-stack MERN application designed to elimina
 
 ---
 
-## 📂 Codebase Monorepo Topography
+## Codebase Monorepo Topography
 
 ```text
 rentmate-app/
@@ -49,7 +49,7 @@ rentmate-app/
 ```
 ---
 
-## ⚡ Quick Deployment & Setup Instructions
+## Quick Deployment & Setup Instructions
 Prerequisites
 Ensure you have Node.js and npm installed locally, alongside a live MongoDB Atlas URI string.
 
@@ -88,7 +88,7 @@ The browser will automatically launch the interface portal at http://localhost:3
 
 ---
 
-## 📈 Sustainable Business Monetization Matrix
+## Sustainable Business Monetization Matrix
 
 Unlike traditional brokers, RentMate utilizes a diversified 6-tiered digital optimization system:
 
